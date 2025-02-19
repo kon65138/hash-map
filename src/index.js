@@ -1,11 +1,12 @@
 import './style.css';
 
 class HashMap {
-  constructor(loadFactor, capacity) {
-    this.loadFactor = loadFactor;
+  constructor(capacity, loadFactor = 0.75) {
+    this.loadFactor = capacity * loadFactor;
     this.capacity = capacity;
     this.buckets = [];
     for (let i = 0; i < capacity; i++) this.buckets.push(0);
+    this.entries = 0;
   }
 
   hash(key) {
@@ -27,6 +28,7 @@ class HashMap {
     if (this.buckets[index] === 0) {
       this.buckets[index] = {};
       this.buckets[index][key] = value;
+      this.entries++;
     } else {
       function recursiveSearch(node) {
         if (node[key]) {
@@ -36,12 +38,46 @@ class HashMap {
         if (!node.next) {
           node.next = {};
           node.next[key] = value;
-          return;
+          return 1;
         }
         return recursiveSearch(node.next);
       }
-      recursiveSearch(this.buckets[index]);
+      if (recursiveSearch(this.buckets[index]) === 1) this.entries++;
     }
+
+    if (this.loadFactor === this.entries)
+      for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
+    this.capacity = this.buckets.length;
   }
 }
-let ok = new HashMap(0, 16);
+const names = [
+  'Aaren',
+  'Aarika',
+  'Abagael',
+  'Abagail',
+  'Abbe',
+  'Abbey',
+  'Abbi',
+  'Abbie',
+  'Abby',
+  'Abbye',
+  'Abigael',
+  'Abigail',
+  'Abigale',
+  'Abra',
+  'Ada',
+  'Adah',
+  'Adaline',
+  'Adan',
+  'Adara',
+  'Adda',
+  'Addi',
+  'Addia',
+  'Addie',
+  'Addy',
+];
+let ok = new HashMap(16);
+for (let i = 0; i < names.length; i++) {
+  ok.set(names[i], i);
+}
+console.log(ok);
