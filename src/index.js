@@ -2,8 +2,8 @@ import './style.css';
 
 class HashMap {
   constructor(capacity, loadFactor = 0.75) {
-    this.loadFactor = capacity * loadFactor;
     this.capacity = capacity;
+    this.loadFactor = loadFactor;
     this.buckets = [];
     for (let i = 0; i < capacity; i++) this.buckets.push(0);
     this.entries = 0;
@@ -45,7 +45,7 @@ class HashMap {
       if (recursiveSearch(this.buckets[index]) === 1) this.entries++;
     }
 
-    if (this.loadFactor === this.entries)
+    if (this.capacity * this.loadFactor === this.entries)
       for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
     this.capacity = this.buckets.length;
   }
