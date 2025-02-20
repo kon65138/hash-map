@@ -132,6 +132,10 @@ class HashMap {
     }
     return recursiveSearch(this.buckets[index]);
   }
+
+  length() {
+    return this.entries;
+  }
 }
 const names = [
   'Aaren',
@@ -170,3 +174,7 @@ console.log(ok.get('wefiluhadf'));
 console.log(ok.has('Aaren'));
 console.log(ok.remove('Aaren'));
 console.log(ok.get('Aaren'));
+console.log(ok.length());
+ok.set('miles', 'ur mom lmao');
+console.log(ok.length());
+console.log(ok.get('miles'));
