@@ -7,7 +7,7 @@ class HashMap {
     this.loadFactor = loadFactor;
     this.buckets = [];
     for (let i = 0; i < capacity; i++) this.buckets.push(0);
-    this.entries = 0;
+    this.numOfEntries = 0;
   }
 
   hash(key) {
@@ -29,7 +29,7 @@ class HashMap {
     if (this.buckets[index] === 0) {
       this.buckets[index] = {};
       this.buckets[index][key] = value;
-      this.entries++;
+      this.numOfEntries++;
     } else {
       function recursiveSearch(node) {
         if (Object.entries(node)[0][0] === key) {
@@ -43,9 +43,9 @@ class HashMap {
         }
         return recursiveSearch(node.next);
       }
-      if (recursiveSearch(this.buckets[index]) === 1) this.entries++;
+      if (recursiveSearch(this.buckets[index]) === 1) this.numOfEntries++;
     }
-    if (this.capacity * this.loadFactor === this.entries) this.load();
+    if (this.capacity * this.loadFactor === this.numOfEntries) this.load();
   }
 
   load() {
@@ -132,12 +132,12 @@ class HashMap {
   }
 
   length() {
-    return this.entries;
+    return this.numOfEntries;
   }
 
   clear(size = this.initCapacity) {
     this.buckets = [];
-    this.entries = 0;
+    this.numOfEntries = 0;
     this.capacity = size;
     for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
   }
@@ -168,6 +168,26 @@ class HashMap {
       function recursiveSearch(node) {
         if (node !== 0) {
           arr[arr.length] = Object.entries(node).shift()[1];
+        } else {
+          return;
+        }
+        if (!node.next) {
+          return;
+        }
+        return recursiveSearch(node.next);
+      }
+      recursiveSearch(this.buckets[bucket]);
+    }
+
+    return arr;
+  }
+
+  entries() {
+    let arr = [];
+    for (let bucket in this.buckets) {
+      function recursiveSearch(node) {
+        if (node !== 0) {
+          arr[arr.length] = Object.entries(node).shift();
         } else {
           return;
         }
@@ -225,3 +245,4 @@ console.log(ok.length());
 console.log(ok.get('miles'));
 console.log(ok.keys());
 console.log(ok.values());
+console.log(ok.entries());
