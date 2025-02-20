@@ -50,11 +50,8 @@ class HashMap {
 
   load() {
     let temp = JSON.parse(JSON.stringify(this.buckets));
-    this.buckets = [];
-    this.capacity *= 2;
-    this.entries = 0;
+    this.clear(this.capacity * 2);
     let entries = [];
-    for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
     for (let bucket in temp) {
       function recursiveSearch(node) {
         if (node !== 0) {
@@ -138,10 +135,10 @@ class HashMap {
     return this.entries;
   }
 
-  clear() {
+  clear(size = this.initCapacity) {
     this.buckets = [];
     this.entries = 0;
-    this.capacity = this.initCapacity;
+    this.capacity = size;
     for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
   }
 }
