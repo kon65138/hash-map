@@ -1,7 +1,7 @@
 import './style.css';
 
 class HashMap {
-  constructor(capacity, loadFactor = 0.75) {
+  constructor(capacity = 16, loadFactor = 0.75) {
     this.initCapacity = capacity;
     this.capacity = capacity;
     this.loadFactor = loadFactor;
@@ -45,7 +45,7 @@ class HashMap {
       }
       if (recursiveSearch(this.buckets[index]) === 1) this.numOfEntries++;
     }
-    if (this.capacity * this.loadFactor === this.numOfEntries) this.load();
+    if (this.capacity * this.loadFactor === this.numOfEntries - 1) this.load();
   }
 
   load() {
@@ -202,47 +202,30 @@ class HashMap {
     return arr;
   }
 }
-const names = [
-  'Aaren',
-  'Aarika',
-  'Abagael',
-  'Abagail',
-  'Abbe',
-  'Abbey',
-  'Abbi',
-  'Abbie',
-  'Abby',
-  'Abbye',
-  'Abigael',
-  'Abigail',
-  'Abigale',
-  'Abra',
-  'Ada',
-  'Adah',
-  'Adaline',
-  'Adan',
-  'Adara',
-  'Adda',
-  'Addi',
-  'Addia',
-  'Addie',
-  'Addy',
-];
-let ok = new HashMap(16);
-for (let i = 0; i < names.length; i++) {
-  ok.set(names[i], i);
-}
-console.log(ok);
-console.log(ok.get('Aaren'));
-ok.set('Aaren', 5);
-console.log(ok.get('wefiluhadf'));
-console.log(ok.has('Aaren'));
-console.log(ok.remove('Aaren'));
-console.log(ok.get('Aaren'));
-console.log(ok.length());
-ok.set('miles', 'ur mom lmao');
-console.log(ok.length());
-console.log(ok.get('miles'));
-console.log(ok.keys());
-console.log(ok.values());
-console.log(ok.entries());
+
+const test = new HashMap();
+
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+
+test.set('kite', 56);
+test.set('dog', 'paper bag lol');
+
+test.set('moon', 'silver');
+
+console.log(test);
+console.log(test.length());
+
+test.set('frog', 34);
+test.set('carr', 'basically done now yay');
+console.log(test);
