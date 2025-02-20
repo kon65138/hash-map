@@ -66,7 +66,7 @@ class HashMap {
         }
         return recursiveSearch(node.next);
       }
-      recursiveSearch(temp[bucket], this.set);
+      recursiveSearch(temp[bucket]);
     }
     for (let i = 0; i < entries.length; i++)
       this.set(entries[i][0], entries[i][1]);
@@ -85,6 +85,20 @@ class HashMap {
       if (!node.next) {
         return null;
       }
+      return recursiveSearch(node.next);
+    }
+    return recursiveSearch(this.buckets[index]);
+  }
+
+  has(key) {
+    let index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error('Trying to access index out of bounds');
+    }
+    if (this.buckets[index] === 0) return false;
+    function recursiveSearch(node) {
+      if (Object.entries(node)[0][0] === key) return true;
+      if (!node.next) return false;
       return recursiveSearch(node.next);
     }
     return recursiveSearch(this.buckets[index]);
@@ -124,3 +138,4 @@ console.log(ok);
 console.log(ok.get('Aaren'));
 ok.set('Aaren', 5);
 console.log(ok.get('wefiluhadf'));
+console.log(ok.has('Abagail'));
