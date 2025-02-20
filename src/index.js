@@ -103,6 +103,35 @@ class HashMap {
     }
     return recursiveSearch(this.buckets[index]);
   }
+
+  remove(key) {
+    let index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error('Trying to access index out of bounds');
+    }
+    if (this.buckets[index] === 0) return false;
+    if (Object.entries(this.buckets[index])[0][0] === key) {
+      if (this.buckets[index].next) {
+        this.buckets[index] = this.buckets[index].next;
+      } else {
+        this.buckets[index] = 0;
+      }
+      return true;
+    }
+    function recursiveSearch(node) {
+      if (!node.next) return false;
+      if (Object.entries(node.next)[0][0] === key) {
+        if (node.next.next) {
+          node.next = node.next.next;
+        } else {
+          delete node.next;
+        }
+        return true;
+      }
+      return recursiveSearch(node.next);
+    }
+    return recursiveSearch(this.buckets[index]);
+  }
 }
 const names = [
   'Aaren',
@@ -138,4 +167,6 @@ console.log(ok);
 console.log(ok.get('Aaren'));
 ok.set('Aaren', 5);
 console.log(ok.get('wefiluhadf'));
-console.log(ok.has('Abagail'));
+console.log(ok.has('Aaren'));
+console.log(ok.remove('Aaren'));
+console.log(ok.get('Aaren'));
