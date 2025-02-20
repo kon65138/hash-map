@@ -161,6 +161,26 @@ class HashMap {
 
     return arr;
   }
+
+  values() {
+    let arr = [];
+    for (let bucket in this.buckets) {
+      function recursiveSearch(node) {
+        if (node !== 0) {
+          arr[arr.length] = Object.entries(node).shift()[1];
+        } else {
+          return;
+        }
+        if (!node.next) {
+          return;
+        }
+        return recursiveSearch(node.next);
+      }
+      recursiveSearch(this.buckets[bucket]);
+    }
+
+    return arr;
+  }
 }
 const names = [
   'Aaren',
@@ -204,3 +224,4 @@ ok.set('miles', 'ur mom lmao');
 console.log(ok.length());
 console.log(ok.get('miles'));
 console.log(ok.keys());
+console.log(ok.values());
