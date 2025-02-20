@@ -2,6 +2,7 @@ import './style.css';
 
 class HashMap {
   constructor(capacity, loadFactor = 0.75) {
+    this.initCapacity = capacity;
     this.capacity = capacity;
     this.loadFactor = loadFactor;
     this.buckets = [];
@@ -136,6 +137,13 @@ class HashMap {
   length() {
     return this.entries;
   }
+
+  clear() {
+    this.buckets = [];
+    this.entries = 0;
+    this.capacity = this.initCapacity;
+    for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
+  }
 }
 const names = [
   'Aaren',
@@ -178,3 +186,5 @@ console.log(ok.length());
 ok.set('miles', 'ur mom lmao');
 console.log(ok.length());
 console.log(ok.get('miles'));
+ok.clear();
+console.log(ok);
