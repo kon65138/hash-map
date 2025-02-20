@@ -31,7 +31,7 @@ class HashMap {
       this.entries++;
     } else {
       function recursiveSearch(node) {
-        if (node[key]) {
+        if (Object.entries(node)[0][0] === key) {
           node[key] = value;
           return;
         }
@@ -44,10 +44,50 @@ class HashMap {
       }
       if (recursiveSearch(this.buckets[index]) === 1) this.entries++;
     }
+    if (this.capacity * this.loadFactor === this.entries) this.load();
+  }
 
-    if (this.capacity * this.loadFactor === this.entries)
-      for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
-    this.capacity = this.buckets.length;
+  load() {
+    let temp = JSON.parse(JSON.stringify(this.buckets));
+    this.buckets = [];
+    this.capacity *= 2;
+    this.entries = 0;
+    let entries = [];
+    for (let i = 0; i < this.capacity; i++) this.buckets.push(0);
+    for (let bucket in temp) {
+      function recursiveSearch(node) {
+        if (node !== 0) {
+          entries[entries.length] = Object.entries(node).shift();
+        } else {
+          return;
+        }
+        if (!node.next) {
+          return;
+        }
+        return recursiveSearch(node.next);
+      }
+      recursiveSearch(temp[bucket], this.set);
+    }
+    for (let i = 0; i < entries.length; i++)
+      this.set(entries[i][0], entries[i][1]);
+  }
+
+  get(key) {
+    let index = this.hash(key);
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error('Trying to access index out of bounds');
+    }
+    if (this.buckets[index] === 0) return null;
+    function recursiveSearch(node) {
+      if (Object.entries(node)[0][0] === key) {
+        return node[key];
+      }
+      if (!node.next) {
+        return null;
+      }
+      return recursiveSearch(node.next);
+    }
+    return recursiveSearch(this.buckets[index]);
   }
 }
 const names = [
@@ -81,3 +121,6 @@ for (let i = 0; i < names.length; i++) {
   ok.set(names[i], i);
 }
 console.log(ok);
+console.log(ok.get('Aaren'));
+ok.set('Aaren', 5);
+console.log(ok.get('wefiluhadf'));
